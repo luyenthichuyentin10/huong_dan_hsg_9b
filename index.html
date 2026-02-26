@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập HSG & TS10 Chuyên Tin</title>
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Tinh chỉnh để Code hiển thị đẹp hơn với Highlight.js */
+        pre code.hljs {
+            padding: 1.5em;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <button class="toggle-btn" onclick="toggleSidebar()">☰ <span>MENU</span></button>
+        <h1 class="header-title">HƯỚNG DẪN VÀ MÔ PHỎNG ĐỀ THI HỌC SINH GIỎI TIN HỌC THCS</h1>
+    </header>
+
+    <div class="wrapper">
+        <nav id="sidebar">
+            <div class="menu-category" onclick="toggleSubmenu('sub1')">1. TP Hồ Chí Minh <span>▾</span></div>
+            <div id="sub1" class="submenu">
+                <div class="menu-item" onclick="toggleSubmenu('hcm0910')">Năm học 2009 - 2010 <span style="float: right;">▾</span></div>
+                <div id="hcm0910" class="submenu hidden" style="background: #1e293b;">
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm0910_nhiphan')">Bài 1: Nhị phân</a>
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm0910_tong')">Bài 2: Tổng</a>
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm0910_lamvuon')">Bài 3: Làm vườn</a>
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('hcm1011')">Năm học 2010 - 2011 <span style="float: right;">▾</span></div>
+                <div id="hcm1011" class="submenu hidden" style="background: #1e293b;">
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm1011_sodu')">Bài 1: Số dư</a>
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm1011_hammobius')">Bài 2: Hàm Mobius</a>
+                    <a href="#" class="menu-item" onclick="loadLesson('hcm1011_biendoi')">Bài 3: Biến đổi</a>
+                </div>
+            </div>
+
+        </nav>
+
+        <main id="main-content">
+            <div id="render-content">
+                <div class="step-card border-blue">
+                    <h2 style="text-align: center;">Chào mừng bạn đến với hệ thống hướng dẫn mô phỏng giải đề thi học sinh giỏi tin học THCS</h2>
+                    <p style="text-align: center;">Vui lòng chọn một chuyên đề ở Menu bên trái để bắt đầu.</p>
+                </div>
+            </div>
+            <footer class="teacher-footer">
+                <div class="footer-title">Thầy Hoàng Đăng Quang - Luyện thi Chuyên Tin 10</div>
+                <div class="footer-info">
+                    <span class="footer-item">📞 0903781593</span>
+                    <a href="http://luyenthichuyentin10.edu.vn" target="_blank" class="footer-item">🌐 luyenthichuyentin10.edu.vn</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('expanded');
+        }
+
+        function toggleSubmenu(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        async function loadLesson(lessonId) {
+            // 1. Đánh dấu menu active
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            if(event && event.currentTarget) event.currentTarget.classList.add('active');
+
+            const renderArea = document.getElementById('render-content');
+            renderArea.innerHTML = "<p>Đang tải nội dung...</p>";
+
+            try {
+                // Tải file markdown (Thêm cache breaker để tránh lỗi không đổi nội dung)
+                const response = await fetch(`lessons/${lessonId}.md?v=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("Không tìm thấy file bài học .md");
+                
+                const markdown = await response.text();
+
+                // 2. Render Markdown trước
+                if (typeof marked !== 'undefined') {
+                    renderArea.innerHTML = marked.parse(markdown);
+                    
+                    // Highlight code
+                    renderArea.querySelectorAll('pre code').forEach((el) => {
+                        hljs.highlightElement(el);
+                    });
+
+                    // MathJax
+                    if (window.MathJax) MathJax.typesetPromise();
+                }
+
+                // 3. Tạo vùng chứa mô phỏng NGAY LẬP TỨC sau nội dung Markdown
+                const simContainer = document.createElement('div');
+                simContainer.id = 'simulation-area';
+                renderArea.appendChild(simContainer);
+
+                // 4. Xử lý Script mô phỏng
+                const oldScript = document.getElementById('dynamic-sim-script');
+                if (oldScript) oldScript.remove();
+
+                const script = document.createElement('script');
+                script.id = 'dynamic-sim-script';
+                script.src = `simulations/${lessonId}.js?v=${new Date().getTime()}`;
+                
+                script.onload = () => {
+                    // Gọi trực tiếp tên hàm theo lessonId mà không cần biến đổi gì thêm
+                    const initFuncName = `init_${lessonId}_simulation`; 
+                    
+                    if (typeof window[initFuncName] === 'function') {
+                        window[initFuncName]();
+                    } else {
+                        console.error(`Không tìm thấy hàm khởi tạo: ${initFuncName}`);
+                    }
+                };
+
+                document.body.appendChild(script);
+                window.scrollTo(0, 0);
+
+            } catch (error) {
+                renderArea.innerHTML = `<div class="step-card border-red">
+                    <h2 style="color:red">Lỗi tải bài học</h2>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+    </script>
+</body>
+</html>
