@@ -1,5 +1,5 @@
-## Bài 2: Laptop
-
+## 💻 Bài 2: Laptop 
+<br>
 <div class="step-card border-blue">
 <div class="step-badge bg-blue">Phân tích đề bài</div>
 
@@ -13,6 +13,11 @@ Vân muốn mua một chiếc laptop dựa trên 4 thông số: **Tốc độ CP
 - Laptop 1: 2100, 512, 150 (Giá 200)
 - Laptop 3: 2300, 1024, 200 (Giá 320)
 $\rightarrow$ Laptop 1 bị loại vì $2100 < 2300$, $512 < 1024$ và $150 < 200$.
+
+<div class="important-note">
+
+**📌 Dạng bài:** Addhoc - tham lam
+</div>
 </div>
 
 <div class="step-card border-orange">
