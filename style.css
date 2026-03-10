@@ -288,8 +288,24 @@ pre code.hljs {
 
 .math-formula {
     background-color: #f0f9ff; padding: 15px; border-radius: 8px;
-    text-align: center; font-size: 1.2em; color: var(--color-dark); 
+    text-align: center; font-size: 1.2em; color: #070abb; 
     border: 1px dashed var(--color-primary); margin: 15px 0;
+}
+
+/* Phần ghi chú bên dưới */
+.formula-notes {
+    margin-top: 15px;
+    font-size: 0.8em;      /* Chữ nhỏ hơn so với công thức */
+    text-align: left;     /* Canh lề trái */
+    display: inline-block; /* Giúp căn chỉnh nội dung */
+    width: 100%;          /* Đảm bảo chiếm hết chiều ngang để canh trái chuẩn */
+}
+
+/* Tinh chỉnh danh sách ghi chú (nếu dùng ul/li) */
+.formula-notes ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding: 0;
 }
 
 /* --- ĐỊNH DẠNG GHI CHÚ QUAN TRỌNG (IMPORTANT NOTE) --- */
@@ -318,6 +334,82 @@ pre code.hljs {
     color: #b45309 !important; /* Chữ màu hổ phách */
     border: 1px solid #fcd34d !important;
 }
+
+/* Lớp bọc ngoài giúp bảng cuộn ngang trên màn hình điện thoại/nhỏ */
+.table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Bóng đổ nhẹ, sang trọng */
+    border: 1px solid #e2e8f0; /* Viền bao ngoài */
+}
+
+/* Lớp chính của bảng */
+.algo-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    background-color: #ffffff;
+    margin: 0; /* Margin đã được xử lý ở wrapper */
+}
+
+/* Phần Tiêu đề (Header) */
+.algo-table thead tr {
+    background-color: #f8fafc; /* Xám nhạt dịu mắt */
+    border-bottom: 2px solid #cbd5e1;
+}
+
+.algo-table th {
+    padding: 12px 15px;
+    color: #1e293b; /* Xanh xám đậm để nổi bật */
+    font-weight: 700;
+    border: 1px solid #e2e8f0;
+}
+
+/* Phần Nội dung (Body) */
+.algo-table td {
+    padding: 12px 15px;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+/* Hiệu ứng sọc dưa (Zebra) giúp phân biệt các dòng */
+.algo-table tbody tr:nth-of-type(even) {
+    background-color: #fbfcfd;
+}
+
+/* Hiệu ứng đổi màu khi học sinh di chuột vào dòng */
+.algo-table tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.2s ease;
+}
+
+/* --- CÁC CLASS TIỆN ÍCH (MODIFIERS) ĐỂ HIGHLIGHT --- */
+
+/* Dùng cho cột "Tiêu chí" (để làm nổi dòng) */
+.algo-table .td-label {
+    font-weight: 600;
+    color: #475569;
+    background-color: #f8fafc;
+}
+
+/* Dùng để tô xanh lá phương pháp Tối Ưu (VD: Cách 2, DP, TSNT) */
+.algo-table .td-optimal {
+    background-color: #f0fdf4 !important;
+    color: #15803d;
+}
+
+/* Dùng để tô cam phương pháp Kém Tối Ưu (VD: Vét cạn, TLE) */
+.algo-table .td-warning {
+    background-color: #fff7ed !important;
+    color: #c2410c;
+}
+
+/* Tô màu riêng cho chữ tiêu đề cách thuật toán */
+.algo-table .th-orange { color: #c2410c; }
+.algo-table .th-green { color: #15803d; }
 
 /* --- FOOTER --- */
 .teacher-footer {
